@@ -1,0 +1,13 @@
+{
+    "name": "jqutils/cache",
+    "type": "utility",
+    "description":  "A cache utility to manage localStorage at instance level and caching js files on browser",
+    "homepage": "https://gitlab.com/jqutils/cache",
+  	"author": "Lalit Tanwar",
+    "keywords": ["jqgeeks", "spamjs", "jqutils"],
+    "license": "MIT",
+    
+    "require": {
+      "jqgeeks/utils" : "dev-master"
+    }
+}
