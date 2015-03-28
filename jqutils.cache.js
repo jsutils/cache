@@ -1,7 +1,7 @@
 utils.define('jqutils.cache', function(cache,_cache_) {
 
 	var json = utils.module('utils.json');
-	var localStorage = window.localStorage || utils.module('utils.cache.localStorage');
+	var localStorage = window.localStorage || utils._module('jqutils.cache.cookies');
 	var cacheCounter = 0;
 	var defaultCache;
 	
@@ -55,8 +55,7 @@ utils.proxy("jqutils.cache.files").intercept('utils.files').as(function(files,_,
 	var executed = {};
 	
 	files.get = function(url,data){
-		if(module_files_source.has(url)){
-			console.info("from cache----",url);
+		if(cache_script && module_files_source.has(url)){
 			var D  = $.Deferred(function(d){
 				d.resolve(module_files_source.get(url));
 			});
@@ -66,6 +65,16 @@ utils.proxy("jqutils.cache.files").intercept('utils.files').as(function(files,_,
 			module_files_source.set(url,resp);
 		});
 	}
+	
+	files._cssload_ = function(resource){
+		if(module_files_source.has(resource.url)){
+			return $.when(module_files_source.get(resource.url))
+		} else {
+			return $.get(resource.url).done(function(resp){
+				module_files_source.set(resource.url,resp)
+			});
+		}
+	};
 	
 	files._jsload_ = function(resource){
 		
