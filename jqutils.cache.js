@@ -67,7 +67,7 @@ utils.proxy("jqutils.cache.files").intercept('utils.files').as(function(files,_,
 	}
 	
 	files._cssload_ = function(resource){
-		if(module_files_source.has(resource.url)){
+		if(cache_script && module_files_source.has(resource.url)){
 			return $.when(module_files_source.get(resource.url))
 		} else {
 			return $.get(resource.url).done(function(resp){
