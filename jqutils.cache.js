@@ -8,16 +8,13 @@ utils.define('jqutils.cache', function(cache,_cache_) {
 	cache.set = function(key,value){
 		return defaultCache.set(key,value);
 	};
-	
 	cache.get = function(key){
 		return defaultCache.get(key);
 	};
-	
 	cache._instance_ = function Cache(cacheName){
 		this.id = cacheName || cacheCounter++;
 
 	};
-	
 	_cache_.set = function(key,value){
 		return localStorage.setItem(this.id + "#" + key,json.stringify({ 'time' : '0', text : value}));
 	};
@@ -28,11 +25,32 @@ utils.define('jqutils.cache', function(cache,_cache_) {
 		var x = json.parse(localStorage.getItem(this.id + "#"+ key))
 		return (x==undefined) ? null : x.text;
 	};
+	
 	_cache_.saveText = function(key,value){
 		return localStorage.setItem(this.id + "#" + key,value);
 	};
+	
 	_cache_.getText = function(key){
 		return localStorage.getItem(this.id + "#"+ key)
+	};
+	
+	_cache_.load = function(key,fallback){
+		var self = this;
+		var D = $.Deferred(function(_D){
+			if(self.has(key)){
+				_D.resolve(self.get(key));
+			} else if(fallback !== undefined){
+				var p2 = fallback();
+				p2.done(function(resp3){
+					self.set(key,resp3)
+					_D.resolve(resp3);
+				});
+			} else {
+				_D.reject(key);
+			}
+		});
+		var p = D.promise();
+		return  p;
 	};
 	
 	cache._execute_ = function(){
