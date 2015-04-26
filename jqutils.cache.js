@@ -13,7 +13,7 @@ utils.define('jqutils.cache', function(cache,_cache_) {
 	};
 	cache._instance_ = function Cache(cacheName){
 		this.id = cacheName || cacheCounter++;
-
+		this.tables = {};
 	};
 	_cache_.set = function(key,value){
 		return localStorage.setItem(this.id + "#" + key,json.stringify({ 'time' : '0', text : value}));
@@ -22,7 +22,8 @@ utils.define('jqutils.cache', function(cache,_cache_) {
 		return !!localStorage.getItem(this.id + "#"+ key);
 	};
 	_cache_.get = function(key){
-		var x = json.parse(localStorage.getItem(this.id + "#"+ key))
+		var xString = localStorage.getItem(this.id + "#"+ key);
+		var x = json.parse(xString)
 		return (x==undefined) ? null : x.text;
 	};
 	
@@ -53,12 +54,38 @@ utils.define('jqutils.cache', function(cache,_cache_) {
 		return  p;
 	};
 	
+	var CacheTable = function CacheTable(records){
+		this.push.apply(this,records);
+	};
+	CacheTable.prototype = new Array();
+	
+	_cache_.table = function(tablename){
+		if(this.tables[tablename]){
+			return this.tables[tablename];
+		}
+		var tableCache = this.get("#_TABLE_");
+		if(tableCache == null){
+			tableCache = { list : table , _index_ : null}
+			this.set("#_TABLE_",tableCache);
+		}
+		this.tables[tablename] = new CacheTable(tableCache.list);
+		this.tables[tablename].index(tableCache._index_);
+		this.tables[tablename]._cacheid_ = this.id
+		return this.tables[tablename];
+	};
+	
+	CacheTable.prototype.index = function(fun){
+		this._index_ = fun;
+	};
+	CacheTable.prototype.save = function(fun){
+		this._index_ = fun;
+	};
+	
 	cache._execute_ = function(){
 		defaultCache = cache.instance();
 	};
 	
 	cache._ready_ = function(){
-		
 		
 	};
 	
