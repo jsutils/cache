@@ -35,10 +35,10 @@ utils.define('jqutils.cache', function(cache,_cache_) {
 		return localStorage.getItem(this.id + "#"+ key)
 	};
 	
-	_cache_.load = function(key,fallback){
+	_cache_.load = function(key,fallback,forceFallback){
 		var self = this;
 		var D = $.Deferred(function(_D){
-			if(self.has(key)){
+			if(forceFallback!=true && self.has(key)){
 				_D.resolve(self.get(key));
 			} else if(fallback !== undefined){
 				var p2 = fallback();
@@ -98,6 +98,10 @@ utils.proxy("jqutils.cache.files").intercept('utils.files').as(function(files,_,
 	var module_files_source = utils.module('jqutils.cache').instance('module_files_source');
 	var cache_script = false;
 	var executed = {};
+	
+	files.getVersion = function(){
+		return cache_script ? "" : (new Date()).getTime();
+	};
 	
 	files.get = function(url,data){
 		if(cache_script && module_files_source.has(url)){
@@ -161,7 +165,7 @@ utils.proxy("jqutils.cache.files").intercept('utils.files').as(function(files,_,
 			async: resource.async || false,
 			url: resource.url,
 			dataType: resource.dataType || "script",
-			cache : resource.cache || true
+			cache : resource.cache || cache_script
 		}).done(function(resp){
 			if(resource.module_files!==undefined){
 				for(var i in resource.module_files){
