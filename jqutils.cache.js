@@ -98,9 +98,10 @@ utils.proxy("jqutils.cache.files").intercept('utils.files').as(function(files,_,
 	var module_files_source = utils.module('jqutils.cache').instance('module_files_source');
 	var cache_script = false;
 	var executed = {};
+	var CONFIG = utils.config.get();
 	
 	files.getVersion = function(){
-		return cache_script ? "" : (new Date()).getTime();
+		return CONFIG.version || (cache_script ? "" : (new Date()).getTime());
 	};
 	
 	files.get = function(url,data){
@@ -164,6 +165,7 @@ utils.proxy("jqutils.cache.files").intercept('utils.files').as(function(files,_,
 		return $.ajax({
 			async: resource.async || false,
 			url: resource.url,
+			data : { _ :  files.getVersion()},
 			dataType: resource.dataType || "script",
 			cache : resource.cache || cache_script
 		}).done(function(resp){
