@@ -35,17 +35,27 @@ utils.define('jqutils.cache', function(cache,_cache_) {
 		return localStorage.getItem(this.id + "#"+ key)
 	};
 	
-	_cache_.load = function(key,fallback,forceFallback){
+	_cache_.load = function(key,fallback,updateCache){
 		var self = this;
 		var D = $.Deferred(function(_D){
-			if(forceFallback!=true && self.has(key)){
+			if(updateCache!=true && self.has(key)){
 				_D.resolve(self.get(key));
 			} else if(fallback !== undefined){
+				if(self.has(key)){
+					_D.notify(self.get(key));
+				}
 				var p2 = fallback();
-				p2.done(function(resp3){
-					self.set(key,resp3)
-					_D.resolve(resp3);
-				});
+				if(typeof p2.done === 'function'){
+					p2.done(function(resp3){
+						self.set(key,resp3)
+						_D.notify(resp3);
+						_D.resolve(resp3);
+					});					
+				} else {
+					self.set(key,p2)
+					_D.notify(p2);
+					_D.resolve(p2);
+				}
 			} else {
 				_D.reject(key);
 			}
