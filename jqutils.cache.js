@@ -19,7 +19,8 @@ utils.define('jqutils.cache', function(cache,_cache_) {
 		return localStorage.setItem(this.id + "#" + key,json.stringify({ 'time' : '0', text : value}));
 	};
 	_cache_.has = function(key){
-		return !!localStorage.getItem(this.id + "#"+ key);
+		var value = localStorage.getItem(this.id + "#"+ key);
+		return (value!==undefined && value!==null && value.time!==undefined);
 	};
 	_cache_.get = function(key){
 		var xString = localStorage.getItem(this.id + "#"+ key);
