@@ -20,7 +20,7 @@ utils.define('jqutils.cache', function(cache,_cache_) {
 	};
 	_cache_.has = function(key){
 		var value = localStorage.getItem(this.id + "#"+ key);
-		return (value!==undefined && value!==null && value.time!==undefined);
+		return (typeof value === 'string');
 	};
 	_cache_.get = function(key){
 		var xString = localStorage.getItem(this.id + "#"+ key);
@@ -42,6 +42,7 @@ utils.define('jqutils.cache', function(cache,_cache_) {
 			if(updateCache!=true && self.has(key)){
 				_D.resolve(self.get(key));
 			} else if(fallback !== undefined){
+				console.info("lokking for",key)
 				if(self.has(key)){
 					_D.notify(self.get(key));
 				}
