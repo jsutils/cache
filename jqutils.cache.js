@@ -94,11 +94,18 @@ utils.define('jqutils.cache', function(cache,_cache_) {
 	};
 	
 	cache._execute_ = function(){
+		var APP_VERSION = localStorage.getItem("APP_VERSION");
+		var CONFIG = utils.config.get();
+		if(CONFIG.version !== APP_VERSION){
+			for(var i in localStorage){
+				delete localStorage[i];
+			}
+		}
+		localStorage.setItem("APP_VERSION",CONFIG.version);
 		defaultCache = cache.instance();
 	};
 	
-	cache._ready_ = function(){
-		
+	cache._ready_ = function(){ 
 	};
 	
 });
