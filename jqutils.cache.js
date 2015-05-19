@@ -123,14 +123,16 @@ utils.proxy("jqutils.cache.files").intercept('utils.files').as(function(files,_,
 		return CONFIG.version || (cache_script ? "" : (new Date()).getTime());
 	};
 	
-	files.get = function(url,data){
+	files.get = function(url,data,cb,dataType){
 		if(cache_script && module_files_source.has(url)){
 			var D  = $.Deferred(function(d){
 				d.resolve(module_files_source.get(url));
 			});
 			return D.promise();
 		}
-		return $.get.apply(this,arguments).done(function(resp){
+		var _data = data || {};
+		_data._ = _data._ || files.getVersion();
+		return $.get.apply(this,[url,_data,cb,dataType]).done(function(resp){
 			module_files_source.set(url,resp);
 		});
 	}
