@@ -126,23 +126,23 @@ utils.proxy("jqutils.cache.files").intercept('utils.files').as(function(files,_,
 	files.get = function(url,data,cb,dataType){
 		if(cache_script && module_files_source.has(url)){
 			var D  = $.Deferred(function(d){
-				d.resolve(module_files_source.get(url));
+				d.resolve(module_files_source.getText(url));
 			});
 			return D.promise();
 		}
 		var _data = data || {};
 		_data._ = _data._ || files.getVersion();
 		return $.get.apply(this,[url,_data,cb,dataType]).done(function(resp){
-			module_files_source.set(url,resp);
+			module_files_source.saveText(url,resp);
 		});
 	}
 	
 	files._cssload_ = function(resource){
 		if(cache_script && module_files_source.has(resource.url)){
-			return $.when(module_files_source.get(resource.url))
+			return $.when(module_files_source.getText(resource.url))
 		} else {
 			return $.get(resource.url).done(function(resp){
-				module_files_source.set(resource.url,resp)
+				module_files_source.saveText(resource.url,resp)
 			});
 		}
 	};
