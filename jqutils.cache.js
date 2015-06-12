@@ -29,7 +29,11 @@ utils.define('jqutils.cache', function(cache,_cache_) {
 	};
 	
 	_cache_.saveText = function(key,value){
-		return localStorage.setItem(this.id + "#" + key,value);
+		if(typeof value !== "string"){
+			return localStorage.setItem(this.id + "#" + key,json.stringify(value));
+		} else {
+			return localStorage.setItem(this.id + "#" + key,value);
+		}
 	};
 	
 	_cache_.getText = function(key){
