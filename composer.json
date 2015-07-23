@@ -8,6 +8,6 @@
     "license": "MIT",
     
     "require": {
-      "jqgeeks/utils" : "dev-master"
+      "jqgeeks/utils" : ">=0.0.0"
     }
 }
