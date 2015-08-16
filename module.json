@@ -1,0 +1,12 @@
+{
+	"name" : "jsutils/cache",
+	"jsutils/cache" : {
+		"js" : ["jsutils.cache.js"],
+		"on" : ["webmodules/foo","jsutils/json"]		
+	},
+	"jsutils/cache/cookies" : {
+		"js" : ["jsutils.cache.cookies.js"]		
+	}
+}
+
+
