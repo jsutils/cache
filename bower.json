@@ -1,0 +1,19 @@
+{
+  "name": "jsutils-cache",
+  "homepage": "https://github.com/jsutils/cache",
+  "authors": [
+    "Lalit Tanwar <lalit.tanwar07@gmail.com>"
+  ],
+  "description": "LocalStorage Utility",
+  "main": "jsutils.cache.js",
+  "keywords": [
+    "date",
+    "pitana",
+    "x-tag"
+  ],
+  "dependencies": {
+    "webmodules-foo": ">=3.1.4",
+    "webmodules-jquery": ">=2.1.5"
+  },
+  "license": "MIT"
+}
