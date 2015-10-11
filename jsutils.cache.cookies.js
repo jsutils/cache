@@ -1,4 +1,6 @@
-utils.define('jqutils.cache.cookies', function(localStorage) {
+define({
+  name : 'jsutils.cache.cookies'
+}).as(function(localStorage) {
     //If localStorage is not defined
     if (!window.localStorage) {
     	  Object.defineProperty(window, "localStorage", new (function () {

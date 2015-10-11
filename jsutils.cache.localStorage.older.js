@@ -1,4 +1,6 @@
-utils.define('utils.cache.localStorage.old', function(localStorage) {
+define({
+  name : 'utils.cache.localStorage.old'
+}).as(function(localStorage) {
     /**
      * If localStorage is not defined
      * ref: https://developer.mozilla.org/en/docs/Web/Guide/API/DOM/Storage

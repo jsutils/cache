@@ -7,42 +7,42 @@ define({
 	var cacheCounter = 0;
 	var defaultCache;
 	
-	cache.set = function(key,value){
-		return defaultCache.set(key,value);
-	};
-	cache.get = function(key){
-		return defaultCache.get(key);
-	};
+//	cache.set = function(key,value){
+//		return defaultCache.set(key,value);
+//	};
+//	cache.get = function(key){
+//		return defaultCache.get(key);
+//	};
 	cache._instance_ = function Cache(cacheName){
 		this.id = cacheName || cacheCounter++;
 		this.tables = {};
 	};
-	_cache_.set = function(key,value){
+  cache.set = function(key,value){
 		return localStorage.setItem(this.id + "#" + key,json.stringify({ 'time' : '0', text : value}));
 	};
-	_cache_.has = function(key){
+  cache.has = function(key){
 		var value = localStorage.getItem(this.id + "#"+ key);
 		return (typeof value === 'string');
 	};
-	_cache_.get = function(key){
+  cache.get = function(key){
 		var xString = localStorage.getItem(this.id + "#"+ key);
 		var x = json.parse(xString)
 		return (x==undefined) ? null : x.text;
 	};
-	
-	_cache_.saveText = function(key,value){
+
+  cache.saveText = function(key,value){
 		if(typeof value !== "string"){
 			return localStorage.setItem(this.id + "#" + key,json.stringify(value));
 		} else {
 			return localStorage.setItem(this.id + "#" + key,value);
 		}
 	};
-	
-	_cache_.getText = function(key){
+
+  cache.getText = function(key){
 		return localStorage.getItem(this.id + "#"+ key)
 	};
-	
-	_cache_.load = function(key,fallback,updateCache){
+
+  cache.load = function(key,fallback,updateCache){
 		var self = this;
 		var D = $.Deferred(function(_D){
 			if(updateCache!=true && self.has(key)){
@@ -76,8 +76,8 @@ define({
 		this.push.apply(this,records);
 	};
 	CacheTable.prototype = new Array();
-	
-	_cache_.table = function(tablename){
+
+  cache.table = function(tablename){
 		if(this.tables[tablename]){
 			return this.tables[tablename];
 		}
@@ -100,15 +100,15 @@ define({
 	};
 	
 	cache._execute_ = function(){
-		var APP_VERSION = localStorage.getItem("APP_VERSION");
-		var CONFIG = utils.config.get();
-		if(CONFIG.version !== APP_VERSION){
-			for(var i in localStorage){
-				delete localStorage[i];
-			}
-		}
-		localStorage.setItem("APP_VERSION",CONFIG.version);
-		defaultCache = cache.instance();
+//		var APP_VERSION = localStorage.getItem("APP_VERSION");
+//		var CONFIG = utils.config.get();
+//		if(CONFIG.version !== APP_VERSION){
+//			for(var i in localStorage){
+//				delete localStorage[i];
+//			}
+//		}
+//		localStorage.setItem("APP_VERSION",CONFIG.version);
+//		defaultCache = cache.instance();
 	};
 	
 	cache._ready_ = function(){ 
